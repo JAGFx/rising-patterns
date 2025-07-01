@@ -2,14 +2,14 @@
 
 namespace Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Service;
 
-use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Contract\BookUsageContract;
+use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Contract\EnchantmentContract;
 use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Entity\Book;
 use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Entity\EnchantedBook;
 use LogicException;
 
-class Enchanter implements BookUsageContract
+class Enchanter implements EnchantmentContract
 {
-    public function build(string $title): Book
+    public function buildEmptyBook(string $title): Book
     {
         return new Book($title);
     }

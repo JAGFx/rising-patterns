@@ -29,7 +29,7 @@ class RisingPatterns
 
         $enchanter = new Enchanter();
 
-        $book = $enchanter->build('The Art of War');
+        $book = $enchanter->buildEmptyBook('The Art of War');
         echo "> Build of {$book} \n";
         $enchantedBook = $enchanter->enchant($book, 'Wisdom of Ages');
         echo "> Enchant {$enchantedBook} \n";
