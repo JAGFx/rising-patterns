@@ -1,0 +1,23 @@
+{
+    "name": "jagfx/rising-patterns",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jagfx\\RisingPatterns\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JAGFx"
+        }
+    ],
+    "require": {
+        "php": ">= 8.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.13",
+        "rector/rector": "^2.1",
+        "phpstan/phpstan": "^2.1"
+    }
+}
