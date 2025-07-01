@@ -18,4 +18,9 @@ class Book
     {
         $this->title = $title;
     }
+
+    public function __toString(): string
+    {
+        return 'Book named ' . $this->getTitle();
+    }
 }

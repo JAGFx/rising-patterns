@@ -25,9 +25,9 @@ class RisingPatterns
         $enchanter = new Enchanter();
 
         $book = $enchanter->build('The Art of War');
-        echo "> Book created: " . $book->getTitle() . "\n";
+        echo "> Build of {$book} \n";
         $enchantedBook = $enchanter->enchant($book, 'Wisdom of Ages');
-        echo "> Enchanted Book created: " . $enchantedBook->getTitle() . " with enchantment: " . $enchantedBook->getEnchantment() . "\n";
+        echo "> Enchant {$enchantedBook} \n";
 
         try {
             echo "> Enchant a enchanted book again should not work\n";

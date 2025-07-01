@@ -15,4 +15,9 @@ class EnchantedBook extends Book
     {
         return $this->enchantment;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('Enchanted book named %s with enchantment %s', $this->getTitle(), $this->getEnchantment());
+    }
 }
