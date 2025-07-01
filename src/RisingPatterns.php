@@ -19,6 +19,11 @@ class RisingPatterns
         echo "### Rising Patterns CLI ###\n";
         echo "###########################\n\n";
 
+        self::simpleFactory();
+    }
+
+    private static function simpleFactory(): void
+    {
         echo "Creational | Factories | Simple Factory\n";
         echo "-----------------------------------------\n\n";
 
