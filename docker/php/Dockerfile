@@ -23,4 +23,5 @@ COPY conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
 COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
+RUN useradd --create-home --shell /bin/bash --user-group dev
 WORKDIR /var/www/app

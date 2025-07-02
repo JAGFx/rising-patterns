@@ -46,6 +46,8 @@ class RisingPatterns
         } catch (LogicException $logicException) {
             echo "Error: " . $logicException->getMessage() . "\n";
         }
+
+        echo "\n\n";
     }
 
     private static function abstractFactory(): void

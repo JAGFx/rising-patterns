@@ -1,10 +1,11 @@
 parameters:
     level: max
+    paths:
+        - src
+        - .php-cs-fixer.dist.php
+        - rector.php
     parallel:
         jobSize: 20
         maximumNumberOfProcesses: 32
         minimumNumberOfJobsPerProcess: 2
-    paths:
-        - src
-        - .php-cs-fixer.dist.php
     reportUnmatchedIgnoredErrors: false

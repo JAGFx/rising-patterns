@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">= 8.4",
-      "ext-simplexml": "*"
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.13",
