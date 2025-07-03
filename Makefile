@@ -24,10 +24,10 @@ install: start
 test: test\:unit test\:integration
 
 test\:unit:
-	@bin/php bin/phpunit tests/Unit
+	@bin/console ./vendor/bin/phpunit tests/Unit
 
 test\:integration:
-	@bin/php bin/phpunit tests/Integration
+	@bin/console ./vendor/bin/phpunit tests/Integration
 
 lint:
 	@bin/php php-cs-fixer fix --using-cache=no --diff
