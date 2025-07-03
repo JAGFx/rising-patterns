@@ -1,6 +1,6 @@
 <?php
 
-namespace Jagfx\RisingPatterns\Structural\Adapter\Contract;
+namespace Jagfx\RisingPatterns\Structural\Facade\Contract;
 
 use DateTimeImmutable;
 

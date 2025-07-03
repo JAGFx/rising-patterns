@@ -1,10 +1,10 @@
 <?php
 
-namespace Jagfx\RisingPatterns\Structural\Adapter\Service;
+namespace Jagfx\RisingPatterns\Structural\Facade\Service;
 
-use Jagfx\RisingPatterns\Structural\Adapter\Contract\VirtualMeetingContract;
-use Jagfx\RisingPatterns\Structural\Adapter\Contract\VirtualMeetingSyncerContract;
-use Jagfx\RisingPatterns\Structural\Adapter\Entity\CiscoWebexVirtualMeeting;
+use Jagfx\RisingPatterns\Structural\Facade\Contract\VirtualMeetingContract;
+use Jagfx\RisingPatterns\Structural\Facade\Contract\VirtualMeetingSyncerContract;
+use Jagfx\RisingPatterns\Structural\Facade\Entity\CiscoWebexVirtualMeeting;
 use LogicException;
 
 class CiscoWebexSyncer implements VirtualMeetingSyncerContract

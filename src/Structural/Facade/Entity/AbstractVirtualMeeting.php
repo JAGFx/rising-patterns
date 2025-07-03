@@ -1,10 +1,10 @@
 <?php
 
-namespace Jagfx\RisingPatterns\Structural\Adapter\Entity;
+namespace Jagfx\RisingPatterns\Structural\Facade\Entity;
 
 use DateTimeImmutable;
-use Jagfx\RisingPatterns\Structural\Adapter\Contract\AttendeeContract;
-use Jagfx\RisingPatterns\Structural\Adapter\Contract\VirtualMeetingContract;
+use Jagfx\RisingPatterns\Structural\Facade\Contract\AttendeeContract;
+use Jagfx\RisingPatterns\Structural\Facade\Contract\VirtualMeetingContract;
 
 abstract class AbstractVirtualMeeting implements VirtualMeetingContract
 {

@@ -8,10 +8,10 @@ use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\ItemSerial
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\JsonSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\XmlSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Service\Enchanter;
-use Jagfx\RisingPatterns\Structural\Adapter\Entity\AdobeConnectVirtualMeeting;
-use Jagfx\RisingPatterns\Structural\Adapter\Entity\CiscoWebexVirtualMeeting;
-use Jagfx\RisingPatterns\Structural\Adapter\Service\AdobeConnectSyncer;
-use Jagfx\RisingPatterns\Structural\Adapter\Service\CiscoWebexSyncer;
+use Jagfx\RisingPatterns\Structural\Facade\Entity\AdobeConnectVirtualMeeting;
+use Jagfx\RisingPatterns\Structural\Facade\Entity\CiscoWebexVirtualMeeting;
+use Jagfx\RisingPatterns\Structural\Facade\Service\AdobeConnectSyncer;
+use Jagfx\RisingPatterns\Structural\Facade\Service\CiscoWebexSyncer;
 use LogicException;
 use Throwable;
 
@@ -31,7 +31,7 @@ class RisingPatterns
 
         self::simpleFactory();
         self::abstractFactory();
-        self::adpater();
+        self::facade();
     }
 
     private static function simpleFactory(): void
@@ -50,7 +50,7 @@ class RisingPatterns
             echo "> Enchant a enchanted book again should not work\n";
             $enchanter->enchant($enchantedBook, 'An enchantment that should not work');
         } catch (LogicException $logicException) {
-            echo "Error: " . $logicException->getMessage() . "\n";
+            echo sprintf('Error: %s%s', $logicException->getMessage(), PHP_EOL);
         }
 
         echo "\n\n";
@@ -79,7 +79,7 @@ class RisingPatterns
             echo sprintf('> File Name: %s%s', $itemJson->getFileName(), PHP_EOL);
             echo $itemJson->getContent() . "\n\n";
         } catch (Throwable $throwable) {
-            echo "Error serializing item to JSON: " . $throwable->getMessage() . "\n\n";
+            echo "Error serializing item to JSON: {$throwable->getMessage()}\n\n";
         }
 
         try {
@@ -88,15 +88,15 @@ class RisingPatterns
             echo sprintf('> File Name: %s%s', $itemXml->getFileName(), PHP_EOL);
             echo $itemXml->getContent() . PHP_EOL;
         } catch (Throwable $throwable) {
-            echo "Error serializing item to XML: " . $throwable->getMessage() . "\n";
+            echo sprintf('Error serializing item to XML: %s%s', $throwable->getMessage(), PHP_EOL);
         }
 
         echo "\n\n";
     }
 
-    private static function adpater(): void
+    private static function facade(): void
     {
-        echo "Structural | Adapter\n";
+        echo "Structural | Facade\n";
         echo "-----------------------------------------\n\n";
 
         $adobeConnectSyncer = new AdobeConnectSyncer();
@@ -125,8 +125,8 @@ class RisingPatterns
         try {
             echo "-- Try to use wrong syncer should not work\n";
             $ciscoWebexSyncer->create($adobeConnectVirtualMeeting);
-        } catch (LogicException $logicException) {
-            echo "Error: " . $logicException->getMessage() . "\n";
+        } catch (Throwable $throwable) {
+            echo sprintf('Error: %s%s', $throwable->getMessage(), PHP_EOL);
         }
     }
 }
