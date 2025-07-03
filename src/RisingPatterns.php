@@ -2,11 +2,16 @@
 
 namespace Jagfx\RisingPatterns;
 
+use DateTimeImmutable;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Entity\Item;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\ItemSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\JsonSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\XmlSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Service\Enchanter;
+use Jagfx\RisingPatterns\Structural\Adapter\Entity\AdobeConnectVirtualMeeting;
+use Jagfx\RisingPatterns\Structural\Adapter\Entity\CiscoWebexVirtualMeeting;
+use Jagfx\RisingPatterns\Structural\Adapter\Service\AdobeConnectSyncer;
+use Jagfx\RisingPatterns\Structural\Adapter\Service\CiscoWebexSyncer;
 use LogicException;
 use Throwable;
 
@@ -26,6 +31,7 @@ class RisingPatterns
 
         self::simpleFactory();
         self::abstractFactory();
+        self::adpater();
     }
 
     private static function simpleFactory(): void
@@ -83,6 +89,44 @@ class RisingPatterns
             echo $itemXml->getContent() . PHP_EOL;
         } catch (Throwable $throwable) {
             echo "Error serializing item to XML: " . $throwable->getMessage() . "\n";
+        }
+
+        echo "\n\n";
+    }
+
+    private static function adpater(): void
+    {
+        echo "Structural | Adapter\n";
+        echo "-----------------------------------------\n\n";
+
+        $adobeConnectSyncer = new AdobeConnectSyncer();
+        $ciscoWebexSyncer   = new CiscoWebexSyncer();
+
+        echo "-- Adobe connect create:\n";
+        $adobeConnectVirtualMeeting = new AdobeConnectVirtualMeeting(
+            new DateTimeImmutable(),
+            60,
+            [],
+        );
+        echo sprintf('> Before create: %s%s', $adobeConnectVirtualMeeting, PHP_EOL);
+        $adobeConnectSyncer->create($adobeConnectVirtualMeeting);
+        echo sprintf('> After create: %s%s', $adobeConnectVirtualMeeting, PHP_EOL);
+
+        echo "-- Cisco webex create:\n";
+        $ciscoWebexVirtualMeeting = new CiscoWebexVirtualMeeting(
+            new DateTimeImmutable(),
+            60,
+            [],
+        );
+        echo sprintf('> Before create: %s%s', $ciscoWebexVirtualMeeting, PHP_EOL);
+        $ciscoWebexSyncer->create($ciscoWebexVirtualMeeting);
+        echo sprintf('> After create: %s%s', $ciscoWebexVirtualMeeting, PHP_EOL);
+
+        try {
+            echo "-- Try to use wrong syncer should not work\n";
+            $ciscoWebexSyncer->create($adobeConnectVirtualMeeting);
+        } catch (LogicException $logicException) {
+            echo "Error: " . $logicException->getMessage() . "\n";
         }
     }
 }
