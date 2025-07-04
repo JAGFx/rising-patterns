@@ -12,6 +12,8 @@ use Jagfx\RisingPatterns\Structural\Adapter\Entity\AmazonS3Document;
 use Jagfx\RisingPatterns\Structural\Adapter\Entity\FileStorageDocument;
 use Jagfx\RisingPatterns\Structural\Adapter\Service\AmazonS3Syncer;
 use Jagfx\RisingPatterns\Structural\Adapter\Service\FileStorageSyncer;
+use Jagfx\RisingPatterns\Structural\Decorator\Entity\EnchantedItem;
+use Jagfx\RisingPatterns\Structural\Decorator\Entity\GodItem;
 use Jagfx\RisingPatterns\Structural\Facade\Entity\AdobeConnectVirtualMeeting;
 use Jagfx\RisingPatterns\Structural\Facade\Entity\CiscoWebexVirtualMeeting;
 use Jagfx\RisingPatterns\Structural\Facade\Service\AdobeConnectSyncer;
@@ -38,6 +40,7 @@ class RisingPatterns
         self::abstractFactory();
         self::facade();
         self::adapter();
+        self::decorator();
     }
 
     private static function simpleFactory(): void
@@ -134,6 +137,8 @@ class RisingPatterns
         } catch (Throwable $throwable) {
             echo sprintf('Error: %s%s', $throwable->getMessage(), PHP_EOL);
         }
+
+        echo "\n\n";
     }
 
     private static function adapter(): void
@@ -163,5 +168,29 @@ class RisingPatterns
         } catch (Throwable $throwable) {
             echo sprintf('Error: %s%s', $throwable->getMessage(), PHP_EOL);
         }
+
+        echo "\n\n";
+    }
+
+    private static function decorator(): void
+    {
+        echo "Structural | Decorator\n";
+        echo "-----------------------------------------\n\n";
+
+        echo "-- Self item:\n";
+        $item = new Structural\Decorator\Entity\Item(10, 2);
+        echo sprintf('> Item strength [standalone strength * standalone factor] : %d%s', $item->getStrength(), PHP_EOL);
+
+        echo "-- Enchanted item:\n";
+        $enchantedItem = new EnchantedItem($item, 1.5);
+        echo sprintf('> Enchanted item strength [standalone strength * standalone factor * enchanted factor]: %d%s', $enchantedItem->getStrength(), PHP_EOL);
+
+        echo "-- God item:\n";
+        $godItem = new GodItem($enchantedItem);
+        echo sprintf('> God item strength [standalone strength * standalone factor * enchanted factor * god factor]: %d%s', $godItem->getStrength(), PHP_EOL);
+
+        echo "-- God item from standalone item:\n";
+        $godItem = new GodItem($item);
+        echo sprintf('> God item strength [standalone strength * standalone factor * god factor]: %d%s', $godItem->getStrength(), PHP_EOL);
     }
 }
