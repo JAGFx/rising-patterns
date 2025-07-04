@@ -1,5 +1,8 @@
 FROM php:8.4-fpm
 
+LABEL org.opencontainers.image.source=https://github.com/JAGFx/rising-patterns
+LABEL org.opencontainers.image.licenses=MIT
+
 COPY php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
 RUN apt update -y \

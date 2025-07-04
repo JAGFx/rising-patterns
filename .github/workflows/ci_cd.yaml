@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-publish:
+    name: Build CI image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build PHP image
+        uses: docker/build-push-action@v5
+        with:
+          context: docker/php
+          push: true
+          tags: ghcr.io/jagfx/rising-patterns-php:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  install:
+    name: Install
+    runs-on: ubuntu-latest
+    needs: [build-publish]
+    container:
+      image: ghcr.io/jagfx/rising-patterns-php:ci
+    steps:
+      -   name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 2
+      -   name: Install composer dependencies
+          run: composer install
+      -   name: Cache dependencies
+          uses: actions/cache@v4
+          id: restore-build
+          with:
+            path: ./*
+            key: ${{ github.sha }}
+
+  linter:
+    name: Linter
+    runs-on: ubuntu-latest
+    needs: [install]
+    container:
+      image: ghcr.io/jagfx/rising-patterns-php:ci
+    steps:
+      -   name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 2
+      -   uses: actions/cache@v4
+          id: restore-build
+          with:
+            path: ./*
+            key: ${{ github.sha }}
+      -   name: Run PHP CS Fixer
+          run: php-cs-fixer fix --using-cache=no --diff
+      -   name: Run PHPStan
+          run: php vendor/bin/phpstan analyse -n src
+      -   name: Run Rector
+          run: php vendor/bin/rector process src
+
+  test_unit:
+    name: Unit test
+    runs-on: ubuntu-latest
+    needs: [install]
+    container:
+      image: ghcr.io/jagfx/rising-patterns-php:ci
+    steps:
+      -   name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 2
+      -   uses: actions/cache@v4
+          id: restore-build
+          with:
+            path: ./*
+            key: ${{ github.sha }}
+      -   name: Run unit test
+          run: php vendor/bin/phpunit tests/Unit
+
+  test_functional:
+    name: Functional test
+    runs-on: ubuntu-latest
+    needs: [install]
+    container:
+      image: ghcr.io/jagfx/rising-patterns-php:ci
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/cache@v4
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      - name: Run functional test
+        run: php vendor/bin/phpunit tests/Integration
