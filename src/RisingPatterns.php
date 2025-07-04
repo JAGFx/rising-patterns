@@ -8,11 +8,16 @@ use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\ItemSerial
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\JsonSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\AbstractFactory\Service\XmlSerializer;
 use Jagfx\RisingPatterns\Creational\Factories\SimpleFactory\Service\Enchanter;
+use Jagfx\RisingPatterns\Structural\Adapter\Entity\AmazonS3Document;
+use Jagfx\RisingPatterns\Structural\Adapter\Entity\FileStorageDocument;
+use Jagfx\RisingPatterns\Structural\Adapter\Service\AmazonS3Syncer;
+use Jagfx\RisingPatterns\Structural\Adapter\Service\FileStorageSyncer;
 use Jagfx\RisingPatterns\Structural\Facade\Entity\AdobeConnectVirtualMeeting;
 use Jagfx\RisingPatterns\Structural\Facade\Entity\CiscoWebexVirtualMeeting;
 use Jagfx\RisingPatterns\Structural\Facade\Service\AdobeConnectSyncer;
 use Jagfx\RisingPatterns\Structural\Facade\Service\CiscoWebexSyncer;
 use LogicException;
+use SplFileObject;
 use Throwable;
 
 class RisingPatterns
@@ -32,6 +37,7 @@ class RisingPatterns
         self::simpleFactory();
         self::abstractFactory();
         self::facade();
+        self::adapter();
     }
 
     private static function simpleFactory(): void
@@ -125,6 +131,35 @@ class RisingPatterns
         try {
             echo "-- Try to use wrong syncer should not work\n";
             $ciscoWebexSyncer->create($adobeConnectVirtualMeeting);
+        } catch (Throwable $throwable) {
+            echo sprintf('Error: %s%s', $throwable->getMessage(), PHP_EOL);
+        }
+    }
+
+    private static function adapter(): void
+    {
+        echo "Structural | Adapter\n";
+        echo "-----------------------------------------\n\n";
+
+        $amazonS3Syncer    = new AmazonS3Syncer();
+        $fileStorageSyncer = new FileStorageSyncer();
+        $filePath          = realpath('./') . DIRECTORY_SEPARATOR . 'rising_patterns.png';
+
+        echo "-- Amazon S3 create:\n";
+        $amazonS3Document = new AmazonS3Document(new SplFileObject($filePath));
+        echo sprintf('> Before create: %s%s', $amazonS3Document, PHP_EOL);
+        $amazonS3Syncer->save($amazonS3Document);
+        echo sprintf('> After create: %s%s', $amazonS3Document, PHP_EOL);
+
+        echo "-- File storage create:\n";
+        $fileStorageDocument = new FileStorageDocument(new SplFileObject($filePath));
+        echo sprintf('> Before create: %s%s', $fileStorageDocument, PHP_EOL);
+        $fileStorageSyncer->save($fileStorageDocument);
+        echo sprintf('> After create: %s%s', $fileStorageDocument, PHP_EOL);
+
+        try {
+            echo "-- Try to use wrong syncer should not work\n";
+            $fileStorageSyncer->save($amazonS3Document);
         } catch (Throwable $throwable) {
             echo sprintf('Error: %s%s', $throwable->getMessage(), PHP_EOL);
         }
