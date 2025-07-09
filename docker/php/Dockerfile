@@ -25,8 +25,6 @@ RUN pecl install xdebug \
     && chmod a+x php-cs-fixer \
     && mv php-cs-fixer /usr/local/bin/php-cs-fixer
 
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
 RUN apt purge -y --auto-remove \
         autoconf \
         build-essential \
@@ -38,4 +36,6 @@ RUN apt purge -y --auto-remove \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 RUN useradd --create-home --shell /bin/bash --user-group dev
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 WORKDIR /var/www/app
